@@ -155,6 +155,12 @@ atomic_tests:
       sysadminctl -deleteUser #{user_account} #enter admin password
     cleanup_command: |
       sysadminctl -addUser #{user_account} -fullName "#{user_name}" -password #{user_password}
+  dependencies:
+    - description: Ensure the user account exists before deletion.
+      prereq_command: |
+        id -u #{user_account}
+      get_prereq_command: |
+        sysadminctl -addUser #{user_account} -fullName "#{user_name}" -password #{user_password}
     name: sh
     elevation_required: true
 - name: Azure AD - Delete user via Azure AD PowerShell
